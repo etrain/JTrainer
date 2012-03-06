@@ -1,0 +1,14 @@
+table#clue, th, td {
+  border: 1px solid black;
+  background-color: blue;
+  color: white;
+}
+
+table#clue tr {
+  text-align: center
+}
+
+table#clue td#category {
+  text-transform:uppercase;
+}
+

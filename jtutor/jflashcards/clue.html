@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+  <title>Beat Jeopardy</title>
+  <link rel="stylesheet" href="/static/clue.css">
+</head>
+
+<body>
+  <table id="clue">
+    <tr><td colspan="2" id="category"><p>{{clue.category}}</p></td></tr>
+    <tr><td class="game">{{clue.game}}</td><td>{{clue.value}}</td></tr>
+    <tr><td colspan="2" id="clue">{{clue.clue}}</td></tr>
+    <tr><td colspan="2" id="correct_response"><p>{{clue.correct_response}}</p></td></tr>
+    <tr>
+      <td colspan="2" id="forminp">
+        <form id='resp_form' action="/q/response/{{clue.id}}/" method="post">    
+           {% csrf_token %}
+           <input type="checkbox" name="correct">Correct</input><br />
+           <input type="checkbox" name="knew">Knew</input><br />
+           <input type="checkbox" name="heardof">Heard Of</input><br />
+           <input type="submit" value="Next" />
+        </form>
+      </td>
+  </table>
+</body>
+</html>
