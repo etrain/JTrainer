@@ -1,6 +1,7 @@
 library(tm)
 
 INDIR <- "../../data/"
+OUTDIR <- INDIR
 
 
 read_data <- function(fname=paste(INDIR, "jarchiven.csv", sep='/')) {
@@ -10,23 +11,30 @@ read_data <- function(fname=paste(INDIR, "jarchiven.csv", sep='/')) {
   corp <- tm_map(corp, stripWhitespace)
   corp <- tm_map(corp, tolower)
   corp <- tm_map(corp, removeWords, stopwords("english"))
-  corp
+  list(df=x, corp=corp)
 }
 
 do_kmeans <- function(corp, n=40) {
-  #This is a rough first effort - 
-  #TODO: should come up with a document similarity measure and hClust on that. maybe dissimilarity()
+  #TODO: figure out how to force algo into using more evenly sized clusters.
   
-  tdm <- TermDocumentMatrix(corp)
-  km <- kmeans(tdm, n)
-  print(lapply(sort(unique(km$cluster)), function(x) paste(names(km$cluster[km$cluster == x]))))
-  km
+  dtm <- DocumentTermMatrix(corp)
+  kmeans(dtm, n)
 }
 
+write_data <- function(df, fname=paste(OUTDIR, "jarchiven-clustered.csv", sep='/')) {
+  write.csv(df, fname, row.names=F)
+}
 
 #TODO: function to take kmeans output and assign cluster number back to original document.
-main <- function() {
-  corp <- read_data()
-  do_kmeans(corp)
+main <- function(debug=F) {
+  dat <- read_data()
+  
+  km <- do_kmeans(dat$corp)
+  dat$df$cluster <- km$cluster
+
+  write_data(dat$df)
+
+  if(debug) return(list(df=dat$df, km=km))
 }
 
+main()
