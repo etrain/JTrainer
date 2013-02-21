@@ -25,7 +25,7 @@ do_kmeans <- function(corp, n=30) {
   
   dtm <- DocumentTermMatrix(corp)
   print('created dtm')
-  removeSparseTerms(dtm, 0.999)
+  dtm <- removeSparseTerms(dtm, 0.999)
   print('removed sparse terms')
 
   kmeans(dtm, n)
